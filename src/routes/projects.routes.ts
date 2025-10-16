@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { ProjectController } from "../controllers/Project.controller";
 import { body, param } from "express-validator";
 import { handleInputErrors } from "../middleware/validation";
+import { ProjectController } from "../controllers/Project.controller";
 
 const projectRoutes = Router();
 
