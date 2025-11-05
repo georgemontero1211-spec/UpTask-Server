@@ -4,10 +4,6 @@ import Project from "../models/Project.model";
 export class ProjectController {
   static createProject = async (req: Request, res: Response) => {
     const project = new Project(req.body);
-    if (true) {
-      const error = new Error("Project not found");
-      return res.status(404).json({ error: error.message });
-    }
 
     try {
       await project.save();
@@ -49,7 +45,8 @@ export class ProjectController {
       }
       project.clientName = req.body.clientName;
       project.projectName = req.body.projectName;
-      project.descripcion = req.body.projectDescription;
+      project.descripcion = req.body.descripcion;
+
       await project.save();
       res.json(`Projecto: ${project.projectName} actualizado con exito`);
     } catch (error) {
@@ -66,7 +63,7 @@ export class ProjectController {
         return res.status(404).json({ error: error.message });
       }
       await project.deleteOne();
-      res.json(`Projecto: ${project.projectName} eliminado`);
+      res.send(`Projecto: ${project.projectName} eliminado`);
     } catch (error) {
       console.log(error);
     }
