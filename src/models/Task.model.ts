@@ -2,9 +2,9 @@ import mongoose, { Schema, Document, Types } from "mongoose";
 
 const taskStatus = {
   PENDING: "pending",
-  ON_HOLD: "on_hold",
-  IN_PROGRESS: "in_progress",
-  UNDER_REVIEW: "under_review",
+  ON_HOLD: "onHold",
+  IN_PROGRESS: "inProgress",
+  UNDER_REVIEW: "underReview",
   COMPLETED: "completed",
 } as const;
 
