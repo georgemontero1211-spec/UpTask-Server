@@ -12,14 +12,30 @@ authRoutes.post(
     .isLength({ min: 8 })
     .withMessage("El password tienen que tener minimo 8 caracteres"),
   body("password_confirmation").custom((value, { req }) => {
-    if(value !== req.body.password){
-        throw new Error('Los Password no son iguales')
+    if (value !== req.body.password) {
+      throw new Error("Los Password no son iguales");
     }
-    return true
+    return true;
   }),
   body("email").isEmail().withMessage("E-mail no valido"),
   handleInputErrors,
   AuthController.createAccount
 );
 
+authRoutes.post(
+  "/confirm-account",
+  body("token").notEmpty().withMessage("El Token no puede ir vacio"),
+  handleInputErrors,
+  AuthController.confirmAccount
+);
+
+authRoutes.post(
+  "/login",
+  body("email").isEmail().withMessage("E-mail no valido"),
+  body("password")
+    .notEmpty()
+    .withMessage("El password no puede ir vacio"),
+  handleInputErrors,
+  AuthController.login
+);
 export default authRoutes;
