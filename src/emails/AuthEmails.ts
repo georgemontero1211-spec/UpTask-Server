@@ -1,4 +1,6 @@
 import { transporter } from "../config/nodemailer";
+import dotnev from 'dotenv'
+dotnev.config()
 
 interface IEmail {
   email: string;
@@ -21,7 +23,7 @@ export class AuthEmail {
       html: `<p>Hola ${user.name}, has creado tu cuenta en UpTask, ya casi esta todo listo, 
       solo debes confirmar tu cuenta</p>
         <p>Visita el siguiente enlace:</p>
-        <a href=""> Confirmar cuenta</a>
+        <a href="${process.env.FRONTEND_URL}/auth/confirm-account"> Confirmar cuenta</a>
         <p>E ingresa el codigo: <b>${user.token}</b></p>
         <p>Este token expira en 10 minutos</p> 
       `,
@@ -29,4 +31,28 @@ export class AuthEmail {
     console.log("Mensaje enviado", info.messageId);
     
   };
+
+  static sendPasswordResetToken = async (user: IEmail) => {
+    const sender = {
+      address: "hello@example.com",
+      name: "UpTask <admin@uptask.com>",
+    };
+
+    const info = await transporter.sendMail({
+      from: sender,
+      to: user.email,
+      subject: "Uptask - Reestablece tu password",
+      text: "Uptask - Reestablece tu password",
+      html: `<p>Hola ${user.name}, has solicitado reestablecer tu password.</p>
+        <p>Visita el siguiente enlace:</p>
+        <a href="${process.env.FRONTEND_URL}/auth/new-password"> Reestablecer Password</a>
+        <p>E ingresa el codigo: <b>${user.token}</b></p>
+        <p>Este token expira en 10 minutos</p> 
+      `,
+    });
+    console.log("Mensaje enviado", info.messageId);
+    
+  };
+
+
 }

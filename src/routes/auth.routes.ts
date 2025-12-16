@@ -32,10 +32,29 @@ authRoutes.post(
 authRoutes.post(
   "/login",
   body("email").isEmail().withMessage("E-mail no valido"),
-  body("password")
-    .notEmpty()
-    .withMessage("El password no puede ir vacio"),
+  body("password").notEmpty().withMessage("El password no puede ir vacio"),
   handleInputErrors,
   AuthController.login
+);
+
+authRoutes.post(
+  "/request-code",
+  body("email").isEmail().withMessage("E-mail no valido"),
+  handleInputErrors,
+  AuthController.requestConfirmationCode
+);
+
+authRoutes.post(
+  "/forgot-password",
+  body("email").isEmail().withMessage("E-mail no valido"),
+  handleInputErrors,
+  AuthController.forgotPassword
+);
+
+authRoutes.post(
+  "/validate-token",
+  body("token").notEmpty().withMessage("El Token no puede ir vacio"),
+  handleInputErrors,
+  AuthController.validateToken
 );
 export default authRoutes;

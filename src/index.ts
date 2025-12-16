@@ -1,5 +1,7 @@
 import app from "./server";
 import colors from "colors";
+import dotnev from 'dotenv'
+dotnev.config()
 
 const port = process.env.PORT || 3000;
 
@@ -11,4 +13,6 @@ app.listen(port, () => {
       )}`
     )
   );
+  console.log(process.env.FRONTEND_URL);
+  
 });
