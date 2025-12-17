@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 import { AuthController } from "../controllers/Auth.controller";
 import { handleInputErrors } from "../middleware/validation.middleware";
 
@@ -56,5 +56,21 @@ authRoutes.post(
   body("token").notEmpty().withMessage("El Token no puede ir vacio"),
   handleInputErrors,
   AuthController.validateToken
+);
+
+authRoutes.post(
+  "/update-password/:token",
+  param("token").isNumeric().withMessage('Token no valido'),
+  body("password")
+    .isLength({ min: 8 })
+    .withMessage("El password tienen que tener minimo 8 caracteres"),
+  body("password_confirmation").custom((value, { req }) => {
+    if (value !== req.body.password) {
+      throw new Error("Los Password no son iguales");
+    }
+    return true;
+  }),
+  handleInputErrors,
+  AuthController.updatePasswordWithToken
 );
 export default authRoutes;
