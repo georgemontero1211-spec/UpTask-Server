@@ -5,6 +5,7 @@ import Token from "../models/Token.model";
 import { generateToken } from "../utils/token";
 import { transporter } from "../config/nodemailer";
 import { AuthEmail } from "../emails/AuthEmails";
+import { generateJWT } from "../utils/jwt";
 
 export class AuthController {
   static createAccount = async (req: Request, res: Response) => {
@@ -102,7 +103,8 @@ export class AuthController {
         return res.status(404).json({ error: error.message });
       }
 
-      res.send("Auntenticando...");
+      const token = generateJWT({ id: user.id });
+      res.send(token);
     } catch (error) {
       res.status(500).json({ error: "Hubo un error" });
     }
@@ -193,23 +195,27 @@ export class AuthController {
   static updatePasswordWithToken = async (req: Request, res: Response) => {
     try {
       const { token } = req.params;
-      const {password} = req.body;
+      const { password } = req.body;
 
       const tokenExists = await Token.findOne({ token });
-      
+
       if (!tokenExists) {
         const error = new Error("Token no valido");
         return res.status(401).json({ error: error.message });
       }
 
-      const user = await User.findById(tokenExists.user)
-      user.password = await hashPassword(password)
+      const user = await User.findById(tokenExists.user);
+      user.password = await hashPassword(password);
 
-      await Promise.allSettled([user.save(), tokenExists.deleteOne()])
+      await Promise.allSettled([user.save(), tokenExists.deleteOne()]);
 
       res.send("El password se modifico correctamente");
     } catch (error) {
       res.status(500).json({ error: "Hubo un error" });
     }
+  };
+
+  static user = async (req: Request, res: Response) => {
+    return res.json(req.user)
   };
 }

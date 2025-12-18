@@ -2,8 +2,10 @@ import { Router } from "express";
 import { body, param } from "express-validator";
 import { handleInputErrors } from "../middleware/validation.middleware";
 import { ProjectController } from "../controllers/Project.controller";
+import { authenticate } from "../middleware/auth.middleware";
 
 const projectRoutes = Router();
+projectRoutes.use(authenticate);
 
 projectRoutes.post(
   "/",
