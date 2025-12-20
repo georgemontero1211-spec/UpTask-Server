@@ -3,9 +3,12 @@ import { body, param } from "express-validator";
 import { handleInputErrors } from "../middleware/validation.middleware";
 import { ProjectController } from "../controllers/Project.controller";
 import { authenticate } from "../middleware/auth.middleware";
+import { TeamMemberController } from "../controllers/Team.controller";
+import { projectExists } from "../middleware/project.middleware";
 
 const projectRoutes = Router();
 projectRoutes.use(authenticate);
+projectRoutes.param("projectId", projectExists);
 
 projectRoutes.post(
   "/",
@@ -38,4 +41,33 @@ projectRoutes.delete(
   ProjectController.deleteProject
 );
 
+/**
+ * Routes for team
+ */
+
+projectRoutes.post(
+  "/:projectId/team/find",
+  body("email").isEmail().toLowerCase().withMessage("E-mail no valido"),
+  handleInputErrors,
+  TeamMemberController.findMemberByEmail
+);
+
+projectRoutes.get(
+  "/:projectId/team",
+  TeamMemberController.getProjectTeam
+);
+
+projectRoutes.post(
+  "/:projectId/team",
+  body("id").isMongoId().withMessage("ID No valido"),
+  handleInputErrors,
+  TeamMemberController.addMemberById
+);
+
+projectRoutes.delete(
+  "/:projectId/team",
+  body("id").isMongoId().withMessage("ID No valido"),
+  handleInputErrors,
+  TeamMemberController.removeMemberById
+);
 export default projectRoutes;

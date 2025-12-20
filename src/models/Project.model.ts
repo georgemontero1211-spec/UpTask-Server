@@ -7,16 +7,43 @@ export interface IProject extends Document {
   clientName: string;
   descripcion: string;
   tasks: PopulatedDoc<ITask & Document>[];
-  manager: PopulatedDoc<IUser & Document>
+  manager: PopulatedDoc<IUser & Document>;
+  team: PopulatedDoc<IUser & Document>[];
 }
 
 const ProjectSchema: Schema = new Schema(
   {
-    projectName: { type: String, required: true, trim: true },
-    clientName: { type: String, required: true, trim: true },
-    descripcion: { type: String, required: true, trim: true },
-    tasks: [{ type: Schema.Types.ObjectId, ref: "Task" }],
-    manager: {type: Schema.Types.ObjectId, ref: "User"}
+    projectName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    clientName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    descripcion: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    tasks: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Task",
+      },
+    ],
+    manager: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+    team: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   {
     timestamps: true,

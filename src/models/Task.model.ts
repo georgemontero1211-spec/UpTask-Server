@@ -19,9 +19,21 @@ export interface ITask extends Document {
 
 export const TaskSchema: Schema = new Schema(
   {
-    name: { type: String, required: true, trim: true },
-    descripcion: { type: String, required: true, trim: true },
-    project: { type: Schema.Types.ObjectId, ref: "Project", required: true },
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    descripcion: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    project: {
+      type: Schema.Types.ObjectId,
+      ref: "Project",
+      required: true,
+    },
     status: {
       type: String,
       enum: Object.values(taskStatus),
