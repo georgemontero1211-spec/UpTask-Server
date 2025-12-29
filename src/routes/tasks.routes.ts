@@ -4,6 +4,7 @@ import { handleInputErrors } from "../middleware/validation.middleware";
 import { TaskController } from "../controllers/Task.controller";
 import { projectExists } from "../middleware/project.middleware";
 import {
+  hasAuthorization,
   taskBeLongsToProject,
   taskExists,
 } from "../middleware/task.middleware";
@@ -16,6 +17,7 @@ taskRoutes.param("taskId", taskBeLongsToProject);
 
 taskRoutes.post(
   "/:projectId/tasks",
+  hasAuthorization,
   body("name").notEmpty().withMessage("Name is required"),
   body("descripcion").notEmpty().withMessage("Descripcion is required"),
   handleInputErrors,
@@ -33,6 +35,7 @@ taskRoutes.get(
 
 taskRoutes.put(
   "/:projectId/tasks/:taskId",
+  hasAuthorization,
   param("taskId").isMongoId().withMessage("Id invalid"),
   body("name").notEmpty().withMessage("Name is required"),
   body("descripcion").notEmpty().withMessage("Descripcion is required"),
@@ -42,6 +45,7 @@ taskRoutes.put(
 
 taskRoutes.delete(
   "/:projectId/tasks/:taskId",
+  hasAuthorization,
   param("taskId").isMongoId().withMessage("Id invalid"),
   handleInputErrors,
   TaskController.deleteTask
