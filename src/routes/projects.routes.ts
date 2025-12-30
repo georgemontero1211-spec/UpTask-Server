@@ -5,10 +5,13 @@ import { ProjectController } from "../controllers/Project.controller";
 import { authenticate } from "../middleware/auth.middleware";
 import { TeamMemberController } from "../controllers/Team.controller";
 import { projectExists } from "../middleware/project.middleware";
+import { registerParams } from "../utils/registerParams";
 
 const projectRoutes = Router();
 projectRoutes.use(authenticate);
-projectRoutes.param("projectId", projectExists);
+
+registerParams(projectRoutes);
+//projectRoutes.param("projectId", projectExists);
 
 projectRoutes.post(
   "/",
@@ -52,10 +55,7 @@ projectRoutes.post(
   TeamMemberController.findMemberByEmail
 );
 
-projectRoutes.get(
-  "/:projectId/team",
-  TeamMemberController.getProjectTeam
-);
+projectRoutes.get("/:projectId/team", TeamMemberController.getProjectTeam);
 
 projectRoutes.post(
   "/:projectId/team",

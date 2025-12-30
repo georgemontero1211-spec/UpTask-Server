@@ -8,12 +8,14 @@ import {
   taskBeLongsToProject,
   taskExists,
 } from "../middleware/task.middleware";
+import { registerParams } from "../utils/registerParams";
 
 const taskRoutes = Router();
 
-taskRoutes.param("projectId", projectExists);
-taskRoutes.param("taskId", taskExists);
-taskRoutes.param("taskId", taskBeLongsToProject);
+registerParams(taskRoutes);
+//taskRoutes.param("projectId", projectExists);
+//taskRoutes.param("taskId", taskExists);
+//taskRoutes.param("taskId", taskBeLongsToProject);
 
 taskRoutes.post(
   "/:projectId/tasks",
